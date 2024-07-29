@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRChat Credit Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>VRChat Credit Converter</h1>
+    </header>
+    <main>
+        <div class="converter">
+            <div class="input-group">
+                <label for="credits">Enter Credits:</label>
+                <input type="number" id="credits" placeholder="Enter VRChat Credits">
+            </div>
+            <div class="input-group">
+                <label for="currency">Select Currency:</label>
+                <select id="currency">
+                    <!-- Options will be populated by script.js -->
+                </select>
+            </div>
+        </div>
+        <div id="result"></div>
+        <div id="breakdown"></div>
+    </main>
+    <footer>
+        <p>By <a href="https://github.com/hppedeaf" target="_blank">hppedeaf</a> and <a href="https://www.vrchat.com" target="_blank">VRChat Inc.</a></p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
