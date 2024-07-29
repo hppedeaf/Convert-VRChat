@@ -28,21 +28,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .catch(error => console.error('Error fetching exchange rates:', error));
 
-    loadConverterValuesFromCookies();
     loadMonthlyValuesFromCookies();
+    setDefaultConversionRate();
 
-    document.getElementById('credits').addEventListener('input', () => {
-        convertCredits();
-        saveConverterValuesToCookies();
-    });
-    document.getElementById('amount').addEventListener('input', () => {
-        convertAmount();
-        saveConverterValuesToCookies();
-    });
-    document.getElementById('currency').addEventListener('change', () => {
-        convertCredits();
-        saveConverterValuesToCookies();
-    });
+    document.getElementById('credits').addEventListener('input', convertCredits);
+    document.getElementById('amount').addEventListener('input', convertAmount);
+    document.getElementById('currency').addEventListener('change', convertCredits);
     document.getElementById('subscriptions-container').addEventListener('input', () => {
         calculateMonthly();
         saveMonthlyValuesToCookies();
@@ -53,7 +44,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
     document.getElementById('clear-cookies').addEventListener('click', clearCookies);
-    
+
     // Initialize tab navigation
     initTabs();
 });
@@ -83,7 +74,7 @@ function convertCredits() {
     const tiliaShare = 0.029 * result;
 
     document.getElementById('breakdown').innerHTML = `
-        <p><strong>Approximately:</strong></p>
+        <p><strong>Revenue split:</strong></p>
         <p><strong>${creatorShare.toFixed(2)} ${currency}</strong> (50%) to you, the creators.</p>
         <p><strong>${platformShare.toFixed(2)} ${currency}</strong> (30%) to Steam, Oculus, or Google, depending on the platform.</p>
         <p><strong>${vrchatShare.toFixed(2)} ${currency}</strong> (17.1%) to VRChat.</p>
@@ -109,7 +100,33 @@ function convertAmount() {
     const tiliaShare = 0.029 * amount;
 
     document.getElementById('breakdown').innerHTML = `
-        <p><strong>Approximately:</strong></p>
+        <p><strong>Revenue split:</strong></p>
+        <p><strong>${creatorShare.toFixed(2)} ${currency}</strong> (50%) to you, the creators.</p>
+        <p><strong>${platformShare.toFixed(2)} ${currency}</strong> (30%) to Steam, Oculus, or Google, depending on the platform.</p>
+        <p><strong>${vrchatShare.toFixed(2)} ${currency}</strong> (17.1%) to VRChat.</p>
+        <p><strong>${tiliaShare.toFixed(2)} ${currency}</strong> (2.9%) to Tilia, our payment processor.</p>
+    `;
+
+    // Show the result and breakdown
+    document.getElementById('result').classList.remove('hidden');
+    document.getElementById('breakdown').classList.remove('hidden');
+}
+
+function setDefaultConversionRate() {
+    const credits = 120;
+    const currency = 'USD';
+    const rate = exchangeRates[currency];
+    const result = credits * rate;
+
+    document.getElementById('result').textContent = `${credits} VRChat Credits = ${result.toFixed(2)} ${currency}`;
+
+    const creatorShare = 0.50 * result;
+    const platformShare = 0.30 * result;
+    const vrchatShare = 0.171 * result;
+    const tiliaShare = 0.029 * result;
+
+    document.getElementById('breakdown').innerHTML = `
+        <p><strong>Revenue split:</strong></p>
         <p><strong>${creatorShare.toFixed(2)} ${currency}</strong> (50%) to you, the creators.</p>
         <p><strong>${platformShare.toFixed(2)} ${currency}</strong> (30%) to Steam, Oculus, or Google, depending on the platform.</p>
         <p><strong>${vrchatShare.toFixed(2)} ${currency}</strong> (17.1%) to VRChat.</p>
@@ -173,7 +190,7 @@ function calculateMonthly() {
     document.getElementById('monthly-result').textContent = `Total Monthly Earnings: ${totalEarnings.toFixed(2)} USD`;
 
     document.getElementById('monthly-breakdown').innerHTML = `
-        <p><strong>Approximately:</strong></p>
+        <p><strong>Revenue split:</strong></p>
         <p><strong>${totalCreatorShare.toFixed(2)} USD</strong> (50%) to you, the creators.</p>
         <p><strong>${totalPlatformShare.toFixed(2)} USD</strong> (30%) to Steam, Oculus, or Google, depending on the platform.</p>
         <p><strong>${totalVrchatShare.toFixed(2)} USD</strong> (17.1%) to VRChat.</p>
@@ -183,27 +200,6 @@ function calculateMonthly() {
     // Show the result and breakdown
     document.getElementById('monthly-result').classList.remove('hidden');
     document.getElementById('monthly-breakdown').classList.remove('hidden');
-}
-
-function saveConverterValuesToCookies() {
-    const credits = document.getElementById('credits').value;
-    const amount = document.getElementById('amount').value;
-    const currency = document.getElementById('currency').value;
-
-    document.cookie = `converterData=${JSON.stringify({ credits, amount, currency })}; path=/; max-age=${60 * 60 * 24 * 365}`;
-}
-
-function loadConverterValuesFromCookies() {
-    const cookie = document.cookie.split('; ').find(row => row.startsWith('converterData='));
-    if (cookie) {
-        const data = JSON.parse(cookie.split('=')[1]);
-        document.getElementById('credits').value = data.credits;
-        document.getElementById('amount').value = data.amount;
-        document.getElementById('currency').value = data.currency;
-
-        convertCredits();
-        convertAmount();
-    }
 }
 
 function saveMonthlyValuesToCookies() {
@@ -238,7 +234,6 @@ function loadMonthlyValuesFromCookies() {
 }
 
 function clearCookies() {
-    document.cookie = 'converterData=; path=/; max-age=0';
     document.cookie = 'monthlyData=; path=/; max-age=0';
     location.reload(); // Reload the page to reset the inputs and calculations
 }
