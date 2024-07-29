@@ -10,26 +10,67 @@
 <body>
     <header>
         <h1>VRChat Credit Converter</h1>
+        <nav>
+            <ul>
+                <li><a href="#converter">Converter</a></li>
+                <li><a href="#about">About Converter</a></li>
+                <li><a href="#monthly">Calculate Monthly</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
-        <div class="converter">
-            <div class="input-group">
-                <label for="credits">Enter Credits:</label>
-                <input type="number" id="credits" placeholder="Enter VRChat Credits">
+        <section id="converter" class="tab-content active">
+            <h2>Convert VRChat Credits</h2>
+            <div class="converter">
+                <div class="input-group">
+                    <label for="credits">Enter Credits:</label>
+                    <input type="number" id="credits" placeholder="Enter VRChat Credits">
+                </div>
+                <div class="input-group">
+                    <label for="amount">Enter Amount in Currency:</label>
+                    <input type="number" id="amount" placeholder="Enter Amount in Currency">
+                </div>
+                <div class="input-group">
+                    <label for="currency">Select Currency:</label>
+                    <select id="currency">
+                        <!-- Options will be populated by script.js -->
+                    </select>
+                </div>
             </div>
-            <div class="input-group">
-                <label for="currency">Select Currency:</label>
-                <select id="currency">
-                    <!-- Options will be populated by script.js -->
-                </select>
+            <div id="result" class="hidden"></div>
+            <div id="breakdown" class="hidden"></div>
+        </section>
+        <section id="about" class="tab-content">
+            <h2>About Converter</h2>
+            <p>This converter allows you to convert VRChat credits into various world currencies using the latest exchange rates.</p>
+        </section>
+        <section id="monthly" class="tab-content">
+            <h2>Calculate Monthly Earnings</h2>
+            <p>Use this tool to calculate your monthly earnings based on the number of subscriptions.</p>
+            <div id="subscriptions-container">
+                <div class="subscription" id="subscription-1">
+                    <div class="input-group-row">
+                        <div class="input-group">
+                            <label for="credits-per-subscription-1">Credits per Subscription:</label>
+                            <input type="number" id="credits-per-subscription-1" class="credits-per-subscription" placeholder="Enter Credits">
+                        </div>
+                        <div class="input-group">
+                            <label for="num-subscriptions-1">Number of Subscriptions:</label>
+                            <input type="number" id="num-subscriptions-1" class="num-subscriptions" placeholder="Enter Number">
+                        </div>
+                        <button class="remove-subscription" onclick="removeSubscription(1)">Remove</button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div id="result"></div>
-        <div id="breakdown"></div>
+            <button id="add-subscription">+ Add Another Subscription</button>
+            <div id="monthly-result" class="hidden"></div>
+            <div id="monthly-breakdown" class="hidden"></div>
+        </section>
     </main>
     <footer>
         <p>By <a href="https://github.com/hppedeaf" target="_blank">hppedeaf</a> and <a href="https://www.vrchat.com" target="_blank">VRChat Inc.</a></p>
         <p>&copy; 2024 VRChat Credit Converter</p>
+        <button id="clear-cookies" class="clear-cookies">Clear Cookies</button>
     </footer>
     <script src="script.js"></script>
 </body>
