@@ -41,6 +41,20 @@ header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+header img {
+    height: 4em;
+    margin-right: 1em;
+}
+
+#logo{
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 1.5em;
+}
+
 nav ul {
     list-style-type: none;
     padding: 0;
