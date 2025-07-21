@@ -1,5 +1,5 @@
-// VRChat Credit Converter - Mobile Optimized 2025
-// Enhanced with performance optimizations and mobile-first features
+// VRChat Credit Converter - SEO Optimized 2025
+// Enhanced with performance optimizations and search engine features
 
 const apiKey = 'db6bfa023b2c48b1991502ffbe9509b5';
 const apiUrl = `https://openexchangerates.org/api/latest.json?app_id=${apiKey}`;
@@ -11,11 +11,7 @@ let exchangeRates = {
 let currencies = {};
 let subscriptionCount = 1;
 
-// Mobile Performance: Optimize for touch devices
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-// Mobile-optimized debounce function
+// SEO Performance: Debounce function to reduce API calls
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -24,42 +20,34 @@ function debounce(func, wait) {
             func(...args);
         };
         clearTimeout(timeout);
-        timeout = setTimeout(later, isMobile ? wait * 1.5 : wait); // Longer wait on mobile
+        timeout = setTimeout(later, wait);
     };
 }
 
-// Enhanced error handling for mobile users
+// Enhanced error handling for better user experience
 function handleFetchError(error, context) {
     console.error(`Error ${context}:`, error);
-    // Show user-friendly error message optimized for mobile
+    // Show user-friendly error message
     showErrorMessage(`Unable to load ${context}. Using default rates.`);
 }
 
-// Mobile-optimized error message display
+// SEO: Add error message display
 function showErrorMessage(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
-    errorDiv.style.cssText = `
-        background: #ff6b6b; 
-        color: white; 
-        padding: ${isMobile ? '1.25em' : '1em'}; 
-        border-radius: 8px; 
-        margin: 1em 0;
-        font-size: ${isMobile ? '1em' : '0.9em'};
-        touch-action: manipulation;
-    `;
+    errorDiv.style.cssText = 'background: #ff6b6b; color: white; padding: 1em; border-radius: 4px; margin: 1em 0;';
     
     const converter = document.querySelector('.converter');
     if (converter) {
         converter.insertBefore(errorDiv, converter.firstChild);
-        setTimeout(() => errorDiv.remove(), isMobile ? 7000 : 5000); // Longer display on mobile
+        setTimeout(() => errorDiv.remove(), 5000);
     }
 }
 
-// Mobile Performance: Track user interactions
+// SEO: Track user interactions for analytics
 function trackInteraction(action, details = {}) {
-    // Google Analytics 4 tracking with mobile context
+    // Google Analytics 4 tracking
     if (typeof gtag !== 'undefined') {
         gtag('event', action, {
             event_category: 'VRChat_Converter',
@@ -122,38 +110,27 @@ document.addEventListener('DOMContentLoaded', (event) => {
         saveMonthlyValuesToCookies();
     }, 500);
 
-    // Mobile-optimized event listeners
-    const creditsInput = document.getElementById('credits');
-    const amountInput = document.getElementById('amount');
-    
-    // Add mobile-specific event handling
-    if (isTouch) {
-        // Better touch handling for mobile
-        creditsInput.addEventListener('input', debouncedConvertCredits);
-        creditsInput.addEventListener('blur', convertCredits); // Ensure calculation on blur
-        
-        amountInput.addEventListener('input', debouncedConvertAmount);
-        amountInput.addEventListener('blur', convertAmount); // Ensure calculation on blur
-    } else {
-        creditsInput.addEventListener('input', debouncedConvertCredits);
-        amountInput.addEventListener('input', debouncedConvertAmount);
-    }
-    
+    // Event listeners
+    document.getElementById('credits').addEventListener('input', debouncedConvertCredits);
+    document.getElementById('amount').addEventListener('input', debouncedConvertAmount);
     document.getElementById('currency').addEventListener('change', (e) => {
         convertCredits();
-        trackInteraction('currency_change', { label: e.target.value, mobile: isMobile });
+        trackInteraction('currency_change', { label: e.target.value });
     });
     document.getElementById('subscriptions-container').addEventListener('input', debouncedCalculateMonthly);
     document.getElementById('add-subscription').addEventListener('click', () => {
         addSubscription();
         saveMonthlyValuesToCookies();
-        trackInteraction('add_subscription', { value: subscriptionCount, mobile: isMobile });
+        trackInteraction('add_subscription', { value: subscriptionCount });
     });
 
     document.getElementById('clear-cookies').addEventListener('click', clearCookies);
 
     // Initialize tab navigation
     initTabs();
+    
+    // Initialize mobile menu
+    initMobileMenu();
     
     // SEO: Initialize structured data updates
     updateStructuredData();
@@ -675,7 +652,7 @@ function monitorPerformance() {
     }
 }
 
-// Theme System Functions - Mobile Optimized
+// Theme System Functions
 function initializeTheme() {
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.querySelector('.theme-icon');
@@ -684,23 +661,8 @@ function initializeTheme() {
     const savedTheme = localStorage.getItem('vrchat-converter-theme') || 'dark';
     applyTheme(savedTheme);
     
-    // Mobile-optimized theme toggle event listener
-    if (isTouch) {
-        // Use touchend for better mobile performance
-        themeToggle.addEventListener('touchend', (e) => {
-            e.preventDefault(); // Prevent double-tap zoom
-            toggleTheme();
-        });
-        // Fallback for non-touch
-        themeToggle.addEventListener('click', (e) => {
-            if (!e.isTrusted) return; // Ignore programmatic clicks
-            toggleTheme();
-        });
-    } else {
-        themeToggle.addEventListener('click', toggleTheme);
-    }
-    
-    function toggleTheme() {
+    // Theme toggle event listener
+    themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
@@ -710,10 +672,9 @@ function initializeTheme() {
         // Track theme changes for analytics
         trackInteraction('theme_change', {
             label: newTheme,
-            value: 1,
-            mobile: isMobile
+            value: 1
         });
-    }
+    });
 }
 
 function applyTheme(theme) {
@@ -732,4 +693,117 @@ function applyTheme(theme) {
     setTimeout(() => {
         document.body.classList.remove('theme-transition');
     }, 300);
+}
+
+// Mobile Menu Functionality
+function initMobileMenu() {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const navMenu = document.getElementById('nav-menu');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const navLinks = document.querySelectorAll('nav a');
+    
+    if (!mobileMenuBtn || !navMenu || !mobileOverlay) {
+        console.warn('Mobile menu elements not found');
+        return;
+    }
+    
+    // Toggle mobile menu
+    function toggleMenu() {
+        const isActive = navMenu.classList.contains('active');
+        
+        if (isActive) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
+    
+    // Open mobile menu
+    function openMenu() {
+        mobileMenuBtn.classList.add('active');
+        navMenu.classList.add('active');
+        mobileOverlay.classList.add('active');
+        document.body.classList.add('menu-open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        
+        // Focus first menu item for accessibility
+        const firstLink = navMenu.querySelector('a');
+        if (firstLink) {
+            setTimeout(() => firstLink.focus(), 300);
+        }
+        
+        trackInteraction('mobile_menu_open');
+    }
+    
+    // Close mobile menu
+    function closeMenu() {
+        mobileMenuBtn.classList.remove('active');
+        navMenu.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.classList.remove('menu-open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        
+        trackInteraction('mobile_menu_close');
+    }
+    
+    // Event listeners
+    mobileMenuBtn.addEventListener('click', toggleMenu);
+    mobileOverlay.addEventListener('click', closeMenu);
+    
+    // Close menu when clicking nav links
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            closeMenu();
+            trackInteraction('mobile_menu_navigation', { label: link.getAttribute('href') });
+        });
+    });
+    
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            closeMenu();
+            mobileMenuBtn.focus();
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+    
+    // Prevent body scroll when menu is open (iOS fix)
+    let scrollPosition = 0;
+    
+    function preventBodyScroll() {
+        scrollPosition = window.pageYOffset;
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollPosition}px`;
+        document.body.style.width = '100%';
+    }
+    
+    function allowBodyScroll() {
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('position');
+        document.body.style.removeProperty('top');
+        document.body.style.removeProperty('width');
+        window.scrollTo(0, scrollPosition);
+    }
+    
+    // Enhanced mobile menu behavior
+    mobileMenuBtn.addEventListener('click', () => {
+        if (navMenu.classList.contains('active')) {
+            allowBodyScroll();
+        } else {
+            preventBodyScroll();
+        }
+    });
+    
+    mobileOverlay.addEventListener('click', allowBodyScroll);
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', allowBodyScroll);
+    });
 }

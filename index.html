@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VRChat Credit Converter - Convert VRC Credits to Real Money | Free Calculator 2025</title>
     <meta name="description" content="🎮 FREE VRChat Credit Converter! Convert VRC credits to USD, EUR, GBP + 170 currencies. Calculate VRChat earnings, subscription income & creator revenue splits. Live exchange rates updated daily!">
     <meta name="keywords" content="VRChat credit converter, VRC to USD, VRChat credits to money, VRC calculator, VRChat earnings calculator, VRChat subscription calculator, VRChat creator earnings, VRC revenue split, virtual currency converter, VRChat economy, VRC money calculator, VRChat income calculator, how much VRC credits worth, VRChat credits value, VRC to euro, VRC to dollar, VRChat monetization calculator">
@@ -44,29 +44,18 @@
     <style>
         /* Critical CSS for immediate rendering */
         *,*::before,*::after{box-sizing:border-box}
-        body{font-family:'Dosis',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 50%,#16213e 100%);color:#ffffff;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-        header{background:linear-gradient(135deg,#1976d2 0%,#0d47a1 100%);color:#ffffff;text-align:center;padding:1.5em 0;position:sticky;top:0;z-index:10;transform:translateZ(0)}
+        body{font-family:'Dosis',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 50%,#16213e 100%);color:#ffffff;line-height:1.6;overflow-x:hidden}
+        header{background:linear-gradient(135deg,#1976d2 0%,#0d47a1 100%);color:#ffffff;text-align:center;padding:1.5em 0;position:sticky;top:0;z-index:10}
         #logo{display:flex;justify-content:center;align-items:center;margin:0 0 1em 0;font-size:1.5em}
         #logo h1{margin:0;font-weight:600}
-        #logo img{height:4em;width:4em;margin-right:1em;object-fit:contain;transform:translateZ(0)}
-        .theme-toggle{position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.1);border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4em;z-index:1000;transition:all 0.3s ease;transform:translateZ(0);touch-action:manipulation}
+        #logo img{height:4em;width:4em;margin-right:1em;object-fit:contain}
+        .theme-toggle{position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.1);border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4em;z-index:1000;transition:all 0.3s ease}
         main{flex:1;margin:2em auto;width:100%;max-width:800px;padding:0 1em}
         nav ul{list-style-type:none;padding:0;display:flex;justify-content:center;margin:0;gap:2em;flex-wrap:wrap;background:rgba(30,30,30,0.95);border-radius:25px;padding:0.5em 1em;border:1px solid rgba(255,255,255,0.1)}
-        nav a{color:#ffffff;text-decoration:none;font-size:1.1em;font-weight:500;padding:0.7em 1.5em;border-radius:25px;transition:all 0.3s ease;touch-action:manipulation}
-        input,select{touch-action:manipulation;-webkit-appearance:none;-moz-appearance:none;appearance:none}
-        @media(max-width:768px){
-            header{padding:1em 0}
-            #logo{flex-direction:column;font-size:1.2em}
-            #logo img{margin:0 0 0.5em 0;height:3em;width:3em}
-            nav ul{gap:1em;flex-direction:column;align-items:center}
-            nav a{font-size:1em;padding:0.5em 1em;min-height:44px;display:flex;align-items:center;justify-content:center}
-            main{margin:1em auto;padding:0 0.5em}
-            .theme-toggle{width:45px;height:45px;top:15px;right:15px;font-size:1.2em}
-            .converter,.monthly-calculator{padding:1.25em;margin:0.75em 0}
-            .input-group-row{grid-template-columns:1fr;gap:1em}
-            .section-description{font-size:1em;line-height:1.4}
-            .quick-info{padding:1em;font-size:0.9em}
-        }
+        nav a{color:#ffffff;text-decoration:none;font-size:1.1em;font-weight:500;padding:0.7em 1.5em;border-radius:25px;transition:all 0.3s ease}
+        .mobile-menu-btn{display:none;flex-direction:column;justify-content:space-around;width:30px;height:30px;background:none;border:none;cursor:pointer;padding:0;z-index:1001;position:relative}
+        .mobile-menu-btn span{width:25px;height:3px;background:#fff;transition:all 0.3s ease;display:block}
+        @media (max-width: 768px){.mobile-menu-btn{display:flex}nav ul{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(13,71,161,0.95);flex-direction:column;justify-content:center;align-items:center;gap:2em;z-index:1000}nav ul.active{display:flex}}
     </style>
     <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="style.css"></noscript>
@@ -139,14 +128,24 @@
             <img src="img/VRChat_Credit_Converter.png" alt="VRChat Credit Converter Logo" width="64" height="64" loading="eager" decoding="async" fetchpriority="high">
             <h1>VRChat Credit Converter</h1>
         </div>
+        <!-- Mobile Hamburger Menu Button -->
+        <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Toggle mobile navigation" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
         <nav aria-label="Main navigation">
-            <ul>
+            <ul id="nav-menu">
                 <li><a href="#converter" aria-label="Currency Converter Tool">Converter</a></li>
                 <li><a href="#about" aria-label="About this converter">About</a></li>
                 <li><a href="#monthly" aria-label="Monthly earnings calculator">Monthly Calculator</a></li>
                 <li><a href="#faq" aria-label="Frequently asked questions">FAQ</a></li>
             </ul>
         </nav>
+        
+        <!-- Mobile Navigation Overlay -->
+        <div id="mobile-overlay" class="mobile-overlay"></div>
     </header>
     <main>
         <section id="converter" class="tab-content active">
