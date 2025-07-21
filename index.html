@@ -30,6 +30,8 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://openexchangerates.org">
+    <link rel="preload" href="img/VRChat_Credit_Converter.png" as="image" fetchpriority="high">
+    <link rel="preload" href="script.js" as="script">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://vrchat-credit-converter.com/">
@@ -39,10 +41,24 @@
     <meta name="robots" content="index, follow">
     
     <!-- CSS and Fonts - Optimized for performance -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Critical CSS for immediate rendering */
+        *,*::before,*::after{box-sizing:border-box}
+        body{font-family:'Dosis',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 50%,#16213e 100%);color:#ffffff;line-height:1.6;overflow-x:hidden}
+        header{background:linear-gradient(135deg,#1976d2 0%,#0d47a1 100%);color:#ffffff;text-align:center;padding:1.5em 0;position:sticky;top:0;z-index:10}
+        #logo{display:flex;justify-content:center;align-items:center;margin:0 0 1em 0;font-size:1.5em}
+        #logo h1{margin:0;font-weight:600}
+        #logo img{height:4em;width:4em;margin-right:1em;object-fit:contain}
+        .theme-toggle{position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.1);border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4em;z-index:1000;transition:all 0.3s ease}
+        main{flex:1;margin:2em auto;width:100%;max-width:800px;padding:0 1em}
+        nav ul{list-style-type:none;padding:0;display:flex;justify-content:center;margin:0;gap:2em;flex-wrap:wrap;background:rgba(30,30,30,0.95);border-radius:25px;padding:0.5em 1em;border:1px solid rgba(255,255,255,0.1)}
+        nav a{color:#ffffff;text-decoration:none;font-size:1.1em;font-weight:500;padding:0.7em 1.5em;border-radius:25px;transition:all 0.3s ease}
+    </style>
+    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
     <!-- Favicon -->
@@ -106,7 +122,7 @@
     
     <header>
         <div id="logo">
-            <img src="img/VRChat_Credit_Converter.png" alt="VRChat Credit Converter Logo" width="64" height="64" loading="eager" decoding="async">
+            <img src="img/VRChat_Credit_Converter.png" alt="VRChat Credit Converter Logo" width="64" height="64" loading="eager" decoding="async" fetchpriority="high">
             <h1>VRChat Credit Converter</h1>
         </div>
         <nav aria-label="Main navigation">
@@ -262,17 +278,18 @@
     </footer>
 
     <script src="script.js"></script>
-    <!-- Google Analytics - Optimized for performance -->
+    <!-- Google Analytics - Ultra-optimized loading -->
     <script>
-        // Minimal Google Analytics with delayed loading
+        // Ultra-minimal Google Analytics
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         
-        // Load GA after user interaction or after 3 seconds
+        // Only load GA on meaningful user interaction
         function loadGA() {
-            if (window.gaLoaded) return;
+            if (window.gaLoaded || window.location.hostname === 'localhost') return;
             window.gaLoaded = true;
             
+            // Use minimal GA configuration
             var script = document.createElement('script');
             script.async = true;
             script.src = 'https://www.googletagmanager.com/gtag/js?id=G-QGDYS2KXG1';
@@ -280,17 +297,22 @@
             
             script.onload = function() {
                 gtag('js', new Date());
-                gtag('config', 'G-QGDYS2KXG1');
+                gtag('config', 'G-QGDYS2KXG1', {
+                    send_page_view: false, // Reduce initial load
+                    anonymize_ip: true,
+                    cookie_flags: 'SameSite=None;Secure'
+                });
+                gtag('event', 'page_view'); // Send after load
             };
         }
         
-        // Load on user interaction
-        ['mousedown', 'touchstart', 'scroll', 'keydown'].forEach(function(event) {
+        // Load only on real user engagement (not just scroll)
+        ['click', 'touchstart', 'keydown'].forEach(function(event) {
             document.addEventListener(event, loadGA, {once: true, passive: true});
         });
         
-        // Fallback: load after 3 seconds
-        setTimeout(loadGA, 3000);
+        // Fallback: load after 5 seconds instead of 3
+        setTimeout(loadGA, 5000);
     </script>
 </body>
 </html>
