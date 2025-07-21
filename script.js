@@ -1,5 +1,5 @@
-// VRChat Credit Converter - SEO Optimized 2025
-// Enhanced with performance optimizations and search engine features
+// VRChat Credit Converter - Mobile Optimized 2025
+// Enhanced with performance optimizations and mobile-first features
 
 const apiKey = 'db6bfa023b2c48b1991502ffbe9509b5';
 const apiUrl = `https://openexchangerates.org/api/latest.json?app_id=${apiKey}`;
@@ -11,7 +11,11 @@ let exchangeRates = {
 let currencies = {};
 let subscriptionCount = 1;
 
-// SEO Performance: Debounce function to reduce API calls
+// Mobile Performance: Optimize for touch devices
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// Mobile-optimized debounce function
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -20,34 +24,42 @@ function debounce(func, wait) {
             func(...args);
         };
         clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
+        timeout = setTimeout(later, isMobile ? wait * 1.5 : wait); // Longer wait on mobile
     };
 }
 
-// Enhanced error handling for better user experience
+// Enhanced error handling for mobile users
 function handleFetchError(error, context) {
     console.error(`Error ${context}:`, error);
-    // Show user-friendly error message
+    // Show user-friendly error message optimized for mobile
     showErrorMessage(`Unable to load ${context}. Using default rates.`);
 }
 
-// SEO: Add error message display
+// Mobile-optimized error message display
 function showErrorMessage(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.textContent = message;
-    errorDiv.style.cssText = 'background: #ff6b6b; color: white; padding: 1em; border-radius: 4px; margin: 1em 0;';
+    errorDiv.style.cssText = `
+        background: #ff6b6b; 
+        color: white; 
+        padding: ${isMobile ? '1.25em' : '1em'}; 
+        border-radius: 8px; 
+        margin: 1em 0;
+        font-size: ${isMobile ? '1em' : '0.9em'};
+        touch-action: manipulation;
+    `;
     
     const converter = document.querySelector('.converter');
     if (converter) {
         converter.insertBefore(errorDiv, converter.firstChild);
-        setTimeout(() => errorDiv.remove(), 5000);
+        setTimeout(() => errorDiv.remove(), isMobile ? 7000 : 5000); // Longer display on mobile
     }
 }
 
-// SEO: Track user interactions for analytics
+// Mobile Performance: Track user interactions
 function trackInteraction(action, details = {}) {
-    // Google Analytics 4 tracking
+    // Google Analytics 4 tracking with mobile context
     if (typeof gtag !== 'undefined') {
         gtag('event', action, {
             event_category: 'VRChat_Converter',
@@ -110,18 +122,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
         saveMonthlyValuesToCookies();
     }, 500);
 
-    // Event listeners
-    document.getElementById('credits').addEventListener('input', debouncedConvertCredits);
-    document.getElementById('amount').addEventListener('input', debouncedConvertAmount);
+    // Mobile-optimized event listeners
+    const creditsInput = document.getElementById('credits');
+    const amountInput = document.getElementById('amount');
+    
+    // Add mobile-specific event handling
+    if (isTouch) {
+        // Better touch handling for mobile
+        creditsInput.addEventListener('input', debouncedConvertCredits);
+        creditsInput.addEventListener('blur', convertCredits); // Ensure calculation on blur
+        
+        amountInput.addEventListener('input', debouncedConvertAmount);
+        amountInput.addEventListener('blur', convertAmount); // Ensure calculation on blur
+    } else {
+        creditsInput.addEventListener('input', debouncedConvertCredits);
+        amountInput.addEventListener('input', debouncedConvertAmount);
+    }
+    
     document.getElementById('currency').addEventListener('change', (e) => {
         convertCredits();
-        trackInteraction('currency_change', { label: e.target.value });
+        trackInteraction('currency_change', { label: e.target.value, mobile: isMobile });
     });
     document.getElementById('subscriptions-container').addEventListener('input', debouncedCalculateMonthly);
     document.getElementById('add-subscription').addEventListener('click', () => {
         addSubscription();
         saveMonthlyValuesToCookies();
-        trackInteraction('add_subscription', { value: subscriptionCount });
+        trackInteraction('add_subscription', { value: subscriptionCount, mobile: isMobile });
     });
 
     document.getElementById('clear-cookies').addEventListener('click', clearCookies);
@@ -649,7 +675,7 @@ function monitorPerformance() {
     }
 }
 
-// Theme System Functions
+// Theme System Functions - Mobile Optimized
 function initializeTheme() {
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = document.querySelector('.theme-icon');
@@ -658,8 +684,23 @@ function initializeTheme() {
     const savedTheme = localStorage.getItem('vrchat-converter-theme') || 'dark';
     applyTheme(savedTheme);
     
-    // Theme toggle event listener
-    themeToggle.addEventListener('click', () => {
+    // Mobile-optimized theme toggle event listener
+    if (isTouch) {
+        // Use touchend for better mobile performance
+        themeToggle.addEventListener('touchend', (e) => {
+            e.preventDefault(); // Prevent double-tap zoom
+            toggleTheme();
+        });
+        // Fallback for non-touch
+        themeToggle.addEventListener('click', (e) => {
+            if (!e.isTrusted) return; // Ignore programmatic clicks
+            toggleTheme();
+        });
+    } else {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
+    
+    function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
@@ -669,9 +710,10 @@ function initializeTheme() {
         // Track theme changes for analytics
         trackInteraction('theme_change', {
             label: newTheme,
-            value: 1
+            value: 1,
+            mobile: isMobile
         });
-    });
+    }
 }
 
 function applyTheme(theme) {

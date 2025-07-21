@@ -72,9 +72,11 @@
     background: var(--blue-secondary);
 }
 
-/* Base Styles */
+/* Base Styles - Mobile Optimized */
 html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -93,6 +95,11 @@ body {
     overflow-x: hidden;
     transition: background 0.3s ease, color 0.3s ease;
     font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-tap-highlight-color: transparent;
 }
 
 /* Optimized animated background elements - Reduced intensity */
@@ -237,7 +244,7 @@ nav a:focus::before {
     opacity: 0;
 }
 
-/* Theme Toggle Button - Fixed Top Right */
+/* Theme Toggle Button - Fixed Top Right - Mobile Optimized */
 .theme-toggle {
     background: var(--bg-secondary);
     border: 2px solid var(--border-color);
@@ -255,6 +262,9 @@ nav a:focus::before {
     right: 20px;
     z-index: 1000;
     box-shadow: 0 4px 12px var(--shadow-color);
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    transform: translateZ(0);
 }
 
 .theme-toggle:hover,
@@ -544,10 +554,40 @@ small {
     width: 100%;
 }
 
+/* Enhanced Mobile Responsiveness */
 @media (max-width: 768px) {
     .input-group-row {
         grid-template-columns: 1fr;
         gap: 1em;
+    }
+    
+    /* Better touch targets */
+    nav a,
+    button,
+    input,
+    select {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+    }
+    
+    /* Reduce motion for mobile performance */
+    *, *::before, *::after {
+        animation-duration: 0.2s !important;
+        transition-duration: 0.2s !important;
+    }
+    
+    /* Optimize main layout for mobile */
+    main {
+        margin: 1em auto;
+        padding: 0 0.75em;
+    }
+    
+    /* Smaller gradients for mobile performance */
+    .converter,
+    .monthly-calculator,
+    .content-section {
+        background: var(--bg-secondary);
     }
 }
 
@@ -571,6 +611,11 @@ input, select {
     font-family: inherit;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 input:focus, select:focus {
@@ -776,10 +821,11 @@ footer a:focus {
     transform: translateY(-1px);
 }
 
-/* Responsive Design */
+/* Responsive Design - Mobile First */
 @media (max-width: 480px) {
     header {
         padding: 1em 0;
+        transform: translateZ(0);
     }
     
     #logo {
@@ -789,23 +835,76 @@ footer a:focus {
     
     #logo img {
         margin: 0 0 0.5em 0;
+        height: 3em;
+        width: 3em;
     }
     
     nav ul {
-        gap: 1em;
+        gap: 0.5em;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.75em;
+    }
+    
+    nav a {
+        font-size: 1em;
+        padding: 0.75em 1.25em;
+        width: 100%;
+        text-align: center;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .converter,
     .monthly-calculator {
-        padding: 1.5em;
+        padding: 1.25em;
+        margin: 1em 0;
     }
     
     section header h2 {
-        font-size: 1.8em;
+        font-size: 1.6em;
+        line-height: 1.3;
     }
     
     .section-description {
-        font-size: 1.1em;
+        font-size: 1em;
+        line-height: 1.5;
+    }
+    
+    .theme-toggle {
+        width: 48px;
+        height: 48px;
+        top: 15px;
+        right: 15px;
+        font-size: 1.3em;
+    }
+    
+    /* Optimize form elements for mobile */
+    input, select {
+        padding: 1em 0.75em;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 12px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    
+    /* Better button spacing */
+    button {
+        padding: 0.875em 1.5em;
+        font-size: 1em;
+        min-height: 48px;
+        border-radius: 12px;
+    }
+    
+    /* Quick info mobile layout */
+    .quick-info {
+        padding: 1em;
+        margin: 1em 0;
+        font-size: 0.9em;
+        line-height: 1.4;
     }
 }
 
