@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://vrchat-credit-converter.com/sitemap.xml
+
+# Crawl-delay (optional - helps with server load)
+Crawl-delay: 1
+
+# Allow all important files for SEO
+Allow: /*.js$
+Allow: /*.css$
+Allow: /img/
+
+# Only disallow sensitive files if any (none currently)
+# Disallow: /private/

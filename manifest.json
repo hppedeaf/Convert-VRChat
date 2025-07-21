@@ -1,0 +1,29 @@
+{
+  "name": "VRChat Credit Converter",
+  "short_name": "VRC Converter",
+  "description": "Convert VRChat credits to real money with live exchange rates",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#0d47a1",
+  "orientation": "portrait-primary",
+  "categories": ["finance", "utilities", "productivity"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "img/VRChat_Credit_Converter.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "img/VRChat_Credit_Converter.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}
