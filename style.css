@@ -89,10 +89,10 @@ body {
     line-height: 1.6;
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-    font-display: swap;
     position: relative;
     overflow-x: hidden;
     transition: background 0.3s ease, color 0.3s ease;
+    font-display: swap;
 }
 
 /* Optimized animated background elements - Reduced intensity */

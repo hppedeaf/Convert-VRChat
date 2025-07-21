@@ -25,6 +25,12 @@
     <meta name="revisit-after" content="1 days">
     <meta name="expires" content="never">
     
+    <!-- Resource hints for performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://openexchangerates.org">
+    
     <!-- Canonical URL -->
     <link rel="canonical" href="https://vrchat-credit-converter.com/">
     
@@ -32,9 +38,21 @@
     <meta name="author" content="hppedeaf">
     <meta name="robots" content="index, follow">
     
-    <!-- CSS and Fonts -->
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- Critical CSS inline for faster loading -->
+    <style>
+        *,*::before,*::after{box-sizing:border-box}
+        body{font-family:'Dosis',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;margin:0;padding:0;min-height:100vh;display:flex;flex-direction:column;background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 50%,#16213e 100%);color:#ffffff;line-height:1.6;overflow-x:hidden}
+        header{background:linear-gradient(135deg,#1976d2 0%,#0d47a1 100%);color:#ffffff;text-align:center;padding:1.5em 0;position:sticky;top:0;z-index:10}
+        .theme-toggle{position:fixed;top:20px;right:20px;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.1);border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.4em;z-index:1000;transition:all 0.3s ease}
+        main{flex:1;margin:2em auto;width:100%;max-width:800px;padding:0 1em}
+    </style>
+    
+    <!-- CSS and Fonts - Optimized for performance -->
+    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap" rel="stylesheet">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
     <!-- Favicon -->
@@ -98,7 +116,7 @@
     
     <header>
         <div id="logo">
-            <img src="img/VRChat_Credit_Converter.png" alt="VRChat Credit Converter Logo" width="64" height="64">
+            <img src="img/VRChat_Credit_Converter.png" alt="VRChat Credit Converter Logo" width="64" height="64" loading="eager" decoding="async">
             <h1>VRChat Credit Converter</h1>
         </div>
         <nav aria-label="Main navigation">
@@ -254,14 +272,20 @@
     </footer>
 
     <script src="script.js"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGDYS2KXG1"></script>
+    <!-- Google tag (gtag.js) - Optimized loading -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-QGDYS2KXG1');
+        // Load Google Analytics asynchronously after page load
+        window.addEventListener('load', function() {
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-QGDYS2KXG1';
+            document.head.appendChild(script);
+            
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QGDYS2KXG1');
+        });
     </script>
 </body>
 </html>

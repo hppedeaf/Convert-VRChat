@@ -25,7 +25,20 @@
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/ico "access plus 1 year"
     ExpiresByType image/icon "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType application/json "access plus 1 hour"
     ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# Browser caching headers
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "public, max-age=3600"
+    </FilesMatch>
 </IfModule>
 
 # Security headers
@@ -34,7 +47,16 @@
     Header always set X-Frame-Options DENY
     Header always set X-XSS-Protection "1; mode=block"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # Performance headers
+    Header always set Vary "Accept-Encoding"
+    
+    # Remove ETags for better caching
+    Header unset ETag
 </IfModule>
+
+# Remove ETags
+FileETag None
 
 # Force HTTPS
 RewriteEngine On
