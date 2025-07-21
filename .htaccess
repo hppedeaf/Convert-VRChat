@@ -17,40 +17,26 @@
 # Cache static resources for better performance
 <IfModule mod_expires.c>
     ExpiresActive on
-    ExpiresByType text/css "access plus 1 year"
-    ExpiresByType application/javascript "access plus 1 year"
-    ExpiresByType image/png "access plus 1 year"
-    ExpiresByType image/jpg "access plus 1 year"
-    ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/gif "access plus 1 year"
-    ExpiresByType image/ico "access plus 1 year"
-    ExpiresByType image/icon "access plus 1 year"
-    ExpiresByType image/webp "access plus 1 year"
-    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/png "access plus 6 months"
+    ExpiresByType image/jpg "access plus 6 months"
+    ExpiresByType image/jpeg "access plus 6 months"
+    ExpiresByType image/gif "access plus 6 months"
+    ExpiresByType image/ico "access plus 6 months"
+    ExpiresByType image/webp "access plus 6 months"
+    ExpiresByType image/svg+xml "access plus 6 months"
     ExpiresByType application/json "access plus 1 hour"
     ExpiresByType text/html "access plus 1 hour"
 </IfModule>
 
-# Security and performance headers
+# Security headers
 <IfModule mod_headers.c>
-    # Browser caching headers
-    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|webp)$">
-        Header set Cache-Control "public, max-age=31536000, immutable"
-    </FilesMatch>
-    <FilesMatch "\.(html|htm)$">
-        Header set Cache-Control "public, max-age=3600"
-    </FilesMatch>
-    
-    # Security headers
-    Header always set X-Content-Type-Options nosniff
-    Header always set X-Frame-Options DENY
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
     Header always set X-XSS-Protection "1; mode=block"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
-    
-    # Performance headers
     Header always set Vary "Accept-Encoding"
-    
-    # Remove ETags for better caching
     Header unset ETag
 </IfModule>
 
@@ -61,9 +47,6 @@ FileETag None
 RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# SEO-friendly redirects (add as needed)
-# Redirect 301 /old-page.html /
 
 # Custom error pages
 ErrorDocument 404 /index.html
